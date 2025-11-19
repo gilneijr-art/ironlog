@@ -89,4 +89,187 @@ export async function getUserByOpenId(openId: string) {
   return result.length > 0 ? result[0] : undefined;
 }
 
-// TODO: add feature queries here as your schema grows.
+// ========== MUSCLE GROUPS ==========
+export async function getAllMuscleGroups() {
+  const db = await getDb();
+  if (!db) return [];
+  const { muscleGroups } = await import("../drizzle/schema");
+  return db.select().from(muscleGroups);
+}
+
+// ========== EXERCISES ==========
+export async function getUserExercises(userId: number) {
+  const db = await getDb();
+  if (!db) return [];
+  const { exercises } = await import("../drizzle/schema");
+  return db.select().from(exercises).where(eq(exercises.userId, userId));
+}
+
+export async function createExercise(exercise: any) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  const { exercises } = await import("../drizzle/schema");
+  const result = await db.insert(exercises).values(exercise);
+  return result;
+}
+
+export async function updateExercise(id: number, data: any) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  const { exercises } = await import("../drizzle/schema");
+  await db.update(exercises).set(data).where(eq(exercises.id, id));
+}
+
+export async function deleteExercise(id: number) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  const { exercises } = await import("../drizzle/schema");
+  await db.delete(exercises).where(eq(exercises.id, id));
+}
+
+// ========== ROUTINES ==========
+export async function getUserRoutines(userId: number) {
+  const db = await getDb();
+  if (!db) return [];
+  const { routines } = await import("../drizzle/schema");
+  return db.select().from(routines).where(eq(routines.userId, userId));
+}
+
+export async function getRoutineById(id: number) {
+  const db = await getDb();
+  if (!db) return null;
+  const { routines } = await import("../drizzle/schema");
+  const result = await db.select().from(routines).where(eq(routines.id, id)).limit(1);
+  return result[0] || null;
+}
+
+export async function createRoutine(routine: any) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  const { routines } = await import("../drizzle/schema");
+  const result = await db.insert(routines).values(routine);
+  return result;
+}
+
+export async function updateRoutine(id: number, data: any) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  const { routines } = await import("../drizzle/schema");
+  await db.update(routines).set(data).where(eq(routines.id, id));
+}
+
+export async function deleteRoutine(id: number) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  const { routines } = await import("../drizzle/schema");
+  await db.delete(routines).where(eq(routines.id, id));
+}
+
+// ========== ROUTINE EXERCISES ==========
+export async function getRoutineExercises(routineId: number) {
+  const db = await getDb();
+  if (!db) return [];
+  const { routineExercises } = await import("../drizzle/schema");
+  return db.select().from(routineExercises).where(eq(routineExercises.routineId, routineId));
+}
+
+export async function addExerciseToRoutine(data: any) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  const { routineExercises } = await import("../drizzle/schema");
+  const result = await db.insert(routineExercises).values(data);
+  return result;
+}
+
+export async function removeExerciseFromRoutine(id: number) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  const { routineExercises } = await import("../drizzle/schema");
+  await db.delete(routineExercises).where(eq(routineExercises.id, id));
+}
+
+// ========== WORKOUT SESSIONS ==========
+export async function getUserWorkoutSessions(userId: number) {
+  const db = await getDb();
+  if (!db) return [];
+  const { workoutSessions } = await import("../drizzle/schema");
+  return db.select().from(workoutSessions).where(eq(workoutSessions.userId, userId));
+}
+
+export async function getActiveWorkoutSession(userId: number) {
+  const db = await getDb();
+  if (!db) return null;
+  const { workoutSessions } = await import("../drizzle/schema");
+  const { isNull, and } = await import("drizzle-orm");
+  const result = await db.select().from(workoutSessions)
+    .where(and(eq(workoutSessions.userId, userId), isNull(workoutSessions.finishedAt)))
+    .limit(1);
+  return result[0] || null;
+}
+
+export async function createWorkoutSession(session: any) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  const { workoutSessions } = await import("../drizzle/schema");
+  const result = await db.insert(workoutSessions).values(session);
+  return result;
+}
+
+export async function updateWorkoutSession(id: number, data: any) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  const { workoutSessions } = await import("../drizzle/schema");
+  await db.update(workoutSessions).set(data).where(eq(workoutSessions.id, id));
+}
+
+// ========== SETS ==========
+export async function getSessionSets(sessionId: number) {
+  const db = await getDb();
+  if (!db) return [];
+  const { sets } = await import("../drizzle/schema");
+  return db.select().from(sets).where(eq(sets.workoutSessionId, sessionId));
+}
+
+export async function createSet(set: any) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  const { sets } = await import("../drizzle/schema");
+  const result = await db.insert(sets).values(set);
+  return result;
+}
+
+export async function updateSet(id: number, data: any) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  const { sets } = await import("../drizzle/schema");
+  await db.update(sets).set(data).where(eq(sets.id, id));
+}
+
+export async function deleteSet(id: number) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  const { sets } = await import("../drizzle/schema");
+  await db.delete(sets).where(eq(sets.id, id));
+}
+
+// ========== PERSONAL RECORDS ==========
+export async function getUserPRs(userId: number, exerciseId?: number) {
+  const db = await getDb();
+  if (!db) return [];
+  const { personalRecords } = await import("../drizzle/schema");
+  const { and } = await import("drizzle-orm");
+  
+  if (exerciseId) {
+    return db.select().from(personalRecords)
+      .where(and(eq(personalRecords.userId, userId), eq(personalRecords.exerciseId, exerciseId)));
+  }
+  return db.select().from(personalRecords).where(eq(personalRecords.userId, userId));
+}
+
+export async function createOrUpdatePR(pr: any) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  const { personalRecords } = await import("../drizzle/schema");
+  const result = await db.insert(personalRecords).values(pr);
+  return result;
+}

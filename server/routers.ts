@@ -17,12 +17,30 @@ export const appRouter = router({
     }),
   }),
 
-  // TODO: add feature routers here, e.g.
-  // todo: router({
-  //   list: protectedProcedure.query(({ ctx }) =>
-  //     db.getUserTodos(ctx.user.id)
-  //   ),
-  // }),
+  exercises: async () => {
+    const { exercisesRouter } = await import("./routers/exercises");
+    return exercisesRouter;
+  },
+  
+  routines: async () => {
+    const { routinesRouter } = await import("./routers/routines");
+    return routinesRouter;
+  },
+  
+  workouts: async () => {
+    const { workoutsRouter } = await import("./routers/workouts");
+    return workoutsRouter;
+  },
+  
+  stats: async () => {
+    const { statsRouter } = await import("./routers/stats");
+    return statsRouter;
+  },
+  
+  backup: async () => {
+    const { backupRouter } = await import("./routers/backup");
+    return backupRouter;
+  },
 });
 
 export type AppRouter = typeof appRouter;
