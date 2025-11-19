@@ -61,6 +61,37 @@
 - [x] Testes de fluxo completo
 
 ## Deploy
-- [ ] Criar checkpoint final
-- [ ] Criar repositório GitHub
-- [ ] Enviar código para GitHub
+- [x] Criar checkpoint final
+- [x] Criar repositório GitHub
+- [x] Enviar código para GitHub
+
+## Melhorias v2.0
+
+### Criação e Edição
+- [x] Modal para criar exercício personalizado
+- [x] Modal para editar exercício existente
+- [x] Modal para criar rotina
+- [x] Modal para editar rotina
+- [x] Adicionar exercícios à rotina
+- [x] Remover exercícios da rotina
+- [x] Drag & drop para reordenar exercícios na rotina
+
+### Filtros e Visualização
+- [x] Filtros no histórico por período (semana, mês, ano)
+- [x] Filtros no histórico por grupo muscular
+- [ ] Filtros no histórico por exercício específico
+- [ ] Comparação entre dois treinos
+- [ ] Visualização de tendências
+
+### Sistema de Metas
+- [x] Criar meta de peso para exercício
+- [x] Criar meta de repetições
+- [x] Criar meta de volume semanal
+- [x] Criar meta de frequência de treinos
+- [x] Dashboard de progresso das metas
+- [ ] Notificações de metas atingidas (requer backend job)
+
+### Testes v2.0
+- [x] Testes para CRUD de exercícios
+- [x] Testes para CRUD de rotinas
+- [x] Testes para sistema de metas

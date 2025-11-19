@@ -15,6 +15,13 @@
       "when": 1763520764909,
       "tag": "0001_curious_omega_sentinel",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "5",
+      "when": 1763522502006,
+      "tag": "0002_striped_lester",
+      "breakpoints": true
     }
   ]
 }

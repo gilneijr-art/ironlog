@@ -141,3 +141,19 @@ export const personalRecords = mysqlTable("personal_records", {
 
 export type PersonalRecord = typeof personalRecords.$inferSelect;
 export type InsertPersonalRecord = typeof personalRecords.$inferInsert;
+export const goals = mysqlTable("goals", {
+  id: int("id").autoincrement().primaryKey(),
+  userId: int("userId").notNull().references(() => users.id, { onDelete: "cascade" }),
+  exerciseId: int("exerciseId").references(() => exercises.id, { onDelete: "cascade" }),
+  type: mysqlEnum("type", ["weight", "reps", "volume", "frequency"]).notNull(),
+  targetValue: int("targetValue").notNull(),
+  currentValue: int("currentValue").default(0),
+  deadline: timestamp("deadline"),
+  achieved: int("achieved").default(0),
+  achievedAt: timestamp("achievedAt"),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+});
+
+export type Goal = typeof goals.$inferSelect;
+export type InsertGoal = typeof goals.$inferInsert;

@@ -11,6 +11,7 @@ import Profile from "./pages/Profile";
 import ActiveWorkout from "./pages/ActiveWorkout";
 import History from "./pages/History";
 import ExerciseStats from "./pages/ExerciseStats";
+import Goals from "./pages/Goals";
 import BottomNav from "./components/BottomNav";
 
 function Router() {
@@ -24,6 +25,7 @@ function Router() {
         <Route path="/workout/:id" component={ActiveWorkout} />
         <Route path="/history" component={History} />
         <Route path="/exercise/:id" component={ExerciseStats} />
+        <Route path="/goals" component={Goals} />
         <Route path="/404" component={NotFound} />
         <Route component={NotFound} />
       </Switch>

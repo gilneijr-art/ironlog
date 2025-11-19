@@ -41,6 +41,11 @@ export const appRouter = router({
     const { backupRouter } = await import("./routers/backup");
     return backupRouter;
   },
+  
+  goals: async () => {
+    const { goalsRouter } = await import("./routers/goals");
+    return goalsRouter;
+  },
 });
 
 export type AppRouter = typeof appRouter;

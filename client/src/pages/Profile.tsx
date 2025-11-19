@@ -1,12 +1,14 @@
 import { useAuth } from "@/_core/hooks/useAuth";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { TrendingUp, Calendar, Dumbbell, Award } from "lucide-react";
+import { TrendingUp, Calendar, Dumbbell, Award, Target, History as HistoryIcon } from "lucide-react";
 import { trpc } from "@/lib/trpc";
 import { getLoginUrl } from "@/const";
+import { useLocation } from "wouter";
 
 export default function Profile() {
   const { user, isAuthenticated, logout } = useAuth();
+  const [, setLocation] = useLocation();
   const { data: stats, isLoading } = trpc.stats.profile.useQuery(undefined, {
     enabled: isAuthenticated,
   });
@@ -101,6 +103,24 @@ export default function Profile() {
         </Card>
 
         <div className="space-y-3">
+          <Button 
+            variant="outline" 
+            className="w-full justify-start"
+            onClick={() => setLocation("/history")}
+          >
+            <HistoryIcon className="w-5 h-5 mr-3" />
+            Ver Histórico
+          </Button>
+          
+          <Button 
+            variant="outline" 
+            className="w-full justify-start"
+            onClick={() => setLocation("/goals")}
+          >
+            <Target className="w-5 h-5 mr-3" />
+            Minhas Metas
+          </Button>
+          
           <Button 
             variant="outline" 
             className="w-full"

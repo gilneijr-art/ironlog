@@ -1,16 +1,20 @@
 import { useAuth } from "@/_core/hooks/useAuth";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Plus, Search } from "lucide-react";
+import { Plus, Search, Pencil, Trash2 } from "lucide-react";
 import { trpc } from "@/lib/trpc";
 import { getLoginUrl } from "@/const";
 import { useState, useMemo } from "react";
 import ExerciseCard from "@/components/ExerciseCard";
+import ExerciseDialog from "@/components/ExerciseDialog";
 import { Card } from "@/components/ui/card";
+import { toast } from "sonner";
 
 export default function Exercises() {
   const { isAuthenticated } = useAuth();
   const [searchQuery, setSearchQuery] = useState("");
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const [editingId, setEditingId] = useState<number | undefined>();
   
   const { data: exercises, isLoading } = trpc.exercises.list.useQuery(undefined, {
     enabled: isAuthenticated,
@@ -18,6 +22,18 @@ export default function Exercises() {
   
   const { data: muscleGroups } = trpc.exercises.muscleGroups.useQuery(undefined, {
     enabled: isAuthenticated,
+  });
+  
+  const utils = trpc.useUtils();
+  
+  const deleteMutation = trpc.exercises.delete.useMutation({
+    onSuccess: () => {
+      toast.success('Exercício deletado!');
+      utils.exercises.list.invalidate();
+    },
+    onError: (error) => {
+      toast.error(`Erro: ${error.message}`);
+    },
   });
 
   const filteredExercises = useMemo(() => {
@@ -53,7 +69,10 @@ export default function Exercises() {
             <h1 className="text-2xl font-bold text-foreground mb-1">Exercícios</h1>
             <p className="text-muted-foreground">Biblioteca completa</p>
           </div>
-          <Button size="sm">
+          <Button size="sm" onClick={() => {
+            setEditingId(undefined);
+            setDialogOpen(true);
+          }}>
             <Plus className="w-4 h-4 mr-2" />
             Novo
           </Button>
@@ -88,15 +107,50 @@ export default function Exercises() {
         ) : (
           <div className="space-y-3">
             {filteredExercises.map((exercise) => (
-              <ExerciseCard
-                key={exercise.id}
-                name={exercise.name}
-                muscleGroup={exercise.muscleGroupId ? muscleGroupMap.get(exercise.muscleGroupId) : undefined}
-                equipmentType={exercise.equipmentType || undefined}
-              />
+              <Card key={exercise.id} className="p-4">
+                <ExerciseCard
+                  name={exercise.name}
+                  muscleGroup={exercise.muscleGroupId ? muscleGroupMap.get(exercise.muscleGroupId) : undefined}
+                  equipmentType={exercise.equipmentType || undefined}
+                />
+                {exercise.isCustom === 1 && (
+                  <div className="flex gap-2 mt-3">
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      onClick={() => {
+                        setEditingId(exercise.id);
+                        setDialogOpen(true);
+                      }}
+                    >
+                      <Pencil className="w-4 h-4 mr-1" />
+                      Editar
+                    </Button>
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      onClick={() => {
+                        if (window.confirm('Deseja deletar este exercício?')) {
+                          deleteMutation.mutate({ id: exercise.id });
+                        }
+                      }}
+                    >
+                      <Trash2 className="w-4 h-4 mr-1" />
+                      Deletar
+                    </Button>
+                  </div>
+                )}
+              </Card>
             ))}
           </div>
         )}
+
+        <ExerciseDialog
+          open={dialogOpen}
+          onOpenChange={setDialogOpen}
+          exerciseId={editingId}
+          onSuccess={() => setDialogOpen(false)}
+        />
       </div>
     </div>
   );
