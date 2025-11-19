@@ -95,3 +95,6 @@
 - [x] Testes para CRUD de exercícios
 - [x] Testes para CRUD de rotinas
 - [x] Testes para sistema de metas
+
+## Bugs Reportados
+- [x] Corrigir funcionalidade de adicionar exercício na criação de rotinas

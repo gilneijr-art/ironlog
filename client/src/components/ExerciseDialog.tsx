@@ -118,7 +118,7 @@ export default function ExerciseDialog({ open, onOpenChange, exerciseId, onSucce
                 <SelectTrigger id="muscleGroup">
                   <SelectValue placeholder="Selecione um grupo" />
                 </SelectTrigger>
-                <SelectContent>
+                <SelectContent className="max-h-[300px]">
                   {muscleGroups?.map((group) => (
                     <SelectItem key={group.id} value={group.id.toString()}>
                       {group.name}
@@ -134,7 +134,7 @@ export default function ExerciseDialog({ open, onOpenChange, exerciseId, onSucce
                 <SelectTrigger id="equipment">
                   <SelectValue placeholder="Selecione um equipamento" />
                 </SelectTrigger>
-                <SelectContent>
+                <SelectContent className="max-h-[300px]">
                   {equipmentOptions.map((option) => (
                     <SelectItem key={option.value} value={option.value}>
                       {option.label}

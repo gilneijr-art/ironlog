@@ -255,7 +255,7 @@ export default function RoutineDialog({ open, onOpenChange, routineId, onSuccess
                   <SelectTrigger>
                     <SelectValue placeholder="Selecione exercício" />
                   </SelectTrigger>
-                  <SelectContent>
+                  <SelectContent className="max-h-[300px]">
                     {exercises?.map((ex) => (
                       <SelectItem key={ex.id} value={ex.id.toString()}>
                         {ex.name}

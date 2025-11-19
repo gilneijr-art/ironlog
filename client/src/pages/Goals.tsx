@@ -211,7 +211,7 @@ export default function Goals() {
                     <SelectTrigger id="type">
                       <SelectValue />
                     </SelectTrigger>
-                    <SelectContent>
+                    <SelectContent className="max-h-[300px]">
                       <SelectItem value="weight">Peso Máximo</SelectItem>
                       <SelectItem value="reps">Repetições Máximas</SelectItem>
                       <SelectItem value="volume">Volume Semanal</SelectItem>
@@ -227,7 +227,7 @@ export default function Goals() {
                       <SelectTrigger id="exercise">
                         <SelectValue placeholder="Selecione um exercício" />
                       </SelectTrigger>
-                      <SelectContent>
+                      <SelectContent className="max-h-[300px]">
                         {exercises?.map((ex) => (
                           <SelectItem key={ex.id} value={ex.id.toString()}>
                             {ex.name}
