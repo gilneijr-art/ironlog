@@ -140,3 +140,27 @@ Desenvolvido com base na especificação inspirada no aplicativo Hevy, mas com i
 ---
 
 **IronLog** - Registre seus treinos de forma rápida, simples e gratuita! 💪
+
+## 🆕 Novidades v2.0
+
+### Criação e Edição Avançada
+- ✅ **Modal de Exercícios Personalizados** - Crie e edite seus próprios exercícios com equipamento e grupo muscular
+- ✅ **Editor de Rotinas Completo** - Interface intuitiva para criar e editar rotinas
+- ✅ **Drag & Drop** - Reordene exercícios nas rotinas arrastando e soltando
+- ✅ **Botão Iniciar Direto** - Comece treinos diretamente da lista de rotinas
+
+### Filtros e Visualização
+- ✅ **Filtros de Período** - Últimos 7 dias, mês, 3 meses ou ano
+- ✅ **Filtros por Grupo Muscular** - Veja treinos específicos de cada grupo
+- ✅ **Contador de Resultados** - Saiba quantos treinos foram encontrados
+
+### Sistema de Metas
+- ✅ **4 Tipos de Metas** - Peso máximo, repetições, volume semanal, frequência
+- ✅ **Dashboard de Progresso** - Visualize quantas metas foram atingidas
+- ✅ **Barra de Progresso** - Acompanhe o progresso de cada meta individualmente
+- ✅ **Metas por Exercício** - Defina metas específicas para cada exercício
+
+### Melhorias de UX
+- ✅ **Links Rápidos no Perfil** - Acesso direto ao histórico e metas
+- ✅ **Validações Aprimoradas** - Feedback claro em todas as operações
+- ✅ **Testes Unitários** - Cobertura completa das novas funcionalidades
