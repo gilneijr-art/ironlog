@@ -100,6 +100,8 @@ export default function RoutineDialog({ open, onOpenChange, routineId, onSuccess
   const [selectedExerciseId, setSelectedExerciseId] = useState("");
   const [exerciseSearchOpen, setExerciseSearchOpen] = useState(false);
   const [exerciseSearchValue, setExerciseSearchValue] = useState("");
+  const [quickCreateDialogOpen, setQuickCreateDialogOpen] = useState(false);
+  const [quickExerciseName, setQuickExerciseName] = useState("");
   const [sets, setSets] = useState("3");
   const [reps, setReps] = useState("10");
 
@@ -112,6 +114,19 @@ export default function RoutineDialog({ open, onOpenChange, routineId, onSuccess
       coordinateGetter: sortableKeyboardCoordinates,
     })
   );
+
+  const createExerciseMutation = trpc.exercises.create.useMutation({
+    onSuccess: (newExercise) => {
+      toast.success("Exercício criado!");
+      utils.exercises.list.invalidate();
+      setSelectedExerciseId(newExercise.id.toString());
+      setQuickCreateDialogOpen(false);
+      setQuickExerciseName("");
+    },
+    onError: (error) => {
+      toast.error(`Erro: ${error.message}`);
+    },
+  });
 
   const createMutation = trpc.routines.create.useMutation({
     onSuccess: () => {
@@ -219,6 +234,7 @@ export default function RoutineDialog({ open, onOpenChange, routineId, onSuccess
   };
 
   return (
+    <>
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-[600px] max-h-[90vh] overflow-y-auto">
         <DialogHeader>
@@ -275,7 +291,24 @@ export default function RoutineDialog({ open, onOpenChange, routineId, onSuccess
                         onValueChange={setExerciseSearchValue}
                       />
                       <CommandList>
-                        <CommandEmpty>Nenhum exercício encontrado.</CommandEmpty>
+                        <CommandEmpty>
+                          <div className="py-6 text-center">
+                            <p className="text-sm text-muted-foreground mb-3">
+                              Nenhum exercício encontrado.
+                            </p>
+                            <Button
+                              size="sm"
+                              onClick={() => {
+                                setQuickExerciseName(exerciseSearchValue);
+                                setQuickCreateDialogOpen(true);
+                                setExerciseSearchOpen(false);
+                              }}
+                            >
+                              <Plus className="w-4 h-4 mr-2" />
+                              Criar "{exerciseSearchValue}"
+                            </Button>
+                          </div>
+                        </CommandEmpty>
                         <CommandGroup>
                           {exercises
                             ?.filter((ex) => 
@@ -377,5 +410,57 @@ export default function RoutineDialog({ open, onOpenChange, routineId, onSuccess
         </form>
       </DialogContent>
     </Dialog>
+
+    {/* Quick Create Exercise Dialog */}
+    <Dialog open={quickCreateDialogOpen} onOpenChange={setQuickCreateDialogOpen}>
+        <DialogContent className="sm:max-w-[400px]">
+          <DialogHeader>
+            <DialogTitle>Criar Exercício Rápido</DialogTitle>
+          </DialogHeader>
+          <div className="grid gap-4 py-4">
+            <div className="grid gap-2">
+              <Label htmlFor="quick-name">Nome do Exercício</Label>
+              <Input
+                id="quick-name"
+                value={quickExerciseName}
+                onChange={(e) => setQuickExerciseName(e.target.value)}
+                placeholder="Ex: Supino Inclinado"
+                autoFocus
+              />
+            </div>
+            <p className="text-sm text-muted-foreground">
+              Você poderá editar detalhes como grupo muscular e equipamento depois na aba Exercícios.
+            </p>
+          </div>
+          <DialogFooter>
+            <Button
+              variant="outline"
+              onClick={() => {
+                setQuickCreateDialogOpen(false);
+                setQuickExerciseName("");
+              }}
+            >
+              Cancelar
+            </Button>
+            <Button
+              onClick={() => {
+                if (!quickExerciseName.trim()) {
+                  toast.error("Digite um nome para o exercício");
+                  return;
+                }
+                createExerciseMutation.mutate({
+                  name: quickExerciseName.trim(),
+                  muscleGroupId: undefined,
+                  equipmentType: undefined,
+                });
+              }}
+              disabled={createExerciseMutation.isPending}
+            >
+              Criar
+            </Button>
+          </DialogFooter>
+      </DialogContent>
+    </Dialog>
+    </>
   );
 }

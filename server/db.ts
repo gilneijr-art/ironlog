@@ -109,8 +109,10 @@ export async function createExercise(exercise: any) {
   const db = await getDb();
   if (!db) throw new Error("Database not available");
   const { exercises } = await import("../drizzle/schema");
-  const result = await db.insert(exercises).values(exercise);
-  return result;
+  const result: any = await db.insert(exercises).values(exercise);
+  const insertId = Number(result.insertId);
+  const created = await db.select().from(exercises).where(eq(exercises.id, insertId)).limit(1);
+  return created[0];
 }
 
 export async function updateExercise(id: number, data: any) {
