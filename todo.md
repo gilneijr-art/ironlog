@@ -105,3 +105,5 @@
 
 ## Bugs Críticos
 - [x] Corrigir botões que não estão funcionando no aplicativo (nested anchors)
+- [x] Corrigir erro ao criar exercício (remover campos undefined)
+- [x] Otimizar performance e reduzir tempo de carregamento (staleTime em queries)

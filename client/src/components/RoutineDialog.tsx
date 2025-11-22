@@ -450,8 +450,6 @@ export default function RoutineDialog({ open, onOpenChange, routineId, onSuccess
                 }
                 createExerciseMutation.mutate({
                   name: quickExerciseName.trim(),
-                  muscleGroupId: undefined,
-                  equipmentType: undefined,
                 });
               }}
               disabled={createExerciseMutation.isPending}

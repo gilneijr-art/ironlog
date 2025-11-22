@@ -18,10 +18,12 @@ export default function Exercises() {
   
   const { data: exercises, isLoading } = trpc.exercises.list.useQuery(undefined, {
     enabled: isAuthenticated,
+    staleTime: 60000, // 1 minuto
   });
   
   const { data: muscleGroups } = trpc.exercises.muscleGroups.useQuery(undefined, {
     enabled: isAuthenticated,
+    staleTime: 300000, // 5 minutos - dados estáticos
   });
   
   const utils = trpc.useUtils();

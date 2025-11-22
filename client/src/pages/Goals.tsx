@@ -21,14 +21,17 @@ export default function Goals() {
 
   const { data: goals, isLoading } = trpc.goals.list.useQuery(undefined, {
     enabled: isAuthenticated,
+    staleTime: 60000,
   });
 
   const { data: progress } = trpc.goals.progress.useQuery(undefined, {
     enabled: isAuthenticated,
+    staleTime: 60000,
   });
 
   const { data: exercises } = trpc.exercises.list.useQuery(undefined, {
     enabled: isAuthenticated,
+    staleTime: 60000,
   });
 
   const utils = trpc.useUtils();

@@ -10,10 +10,11 @@ import { useLocation } from "wouter";
 export default function Home() {
   const { isAuthenticated } = useAuth();
   const [, setLocation] = useLocation();
+  
   const { data: activeWorkout, isLoading } = trpc.workouts.getActive.useQuery(undefined, {
-    enabled: isAuthenticated,
+    refetchOnWindowFocus: false,
+    staleTime: 30000, // 30 segundos
   });
-
   if (!isAuthenticated) {
     return (
       <div className="min-h-screen flex items-center justify-center p-4">
