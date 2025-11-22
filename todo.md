@@ -102,3 +102,6 @@
 ## Melhorias UX
 - [x] Substituir Select por campo de texto com autocomplete na criação de rotinas
 - [x] Adicionar botão de criar exercício rápido no autocomplete
+
+## Bugs Críticos
+- [x] Corrigir botões que não estão funcionando no aplicativo (nested anchors)

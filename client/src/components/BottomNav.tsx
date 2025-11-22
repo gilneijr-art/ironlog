@@ -19,16 +19,18 @@ export default function BottomNav() {
           const isActive = location === item.path;
           
           return (
-            <Link key={item.path} href={item.path}>
-              <a className="flex flex-col items-center justify-center flex-1 h-full gap-1 transition-colors">
-                <Icon 
-                  className={`w-6 h-6 ${isActive ? 'text-primary' : 'text-muted-foreground'}`}
-                  strokeWidth={isActive ? 2.5 : 2}
-                />
-                <span className={`text-xs ${isActive ? 'text-primary font-semibold' : 'text-muted-foreground'}`}>
-                  {item.label}
-                </span>
-              </a>
+            <Link 
+              key={item.path} 
+              href={item.path}
+              className="flex flex-col items-center justify-center flex-1 h-full gap-1 transition-colors"
+            >
+              <Icon 
+                className={`w-6 h-6 ${isActive ? 'text-primary' : 'text-muted-foreground'}`}
+                strokeWidth={isActive ? 2.5 : 2}
+              />
+              <span className={`text-xs ${isActive ? 'text-primary font-semibold' : 'text-muted-foreground'}`}>
+                {item.label}
+              </span>
             </Link>
           );
         })}
