@@ -98,3 +98,6 @@
 
 ## Bugs Reportados
 - [x] Corrigir funcionalidade de adicionar exercício na criação de rotinas
+
+## Melhorias UX
+- [x] Substituir Select por campo de texto com autocomplete na criação de rotinas

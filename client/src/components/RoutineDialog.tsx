@@ -4,7 +4,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/ui/command";
 import { trpc } from "@/lib/trpc";
 import { toast } from "sonner";
 import { Plus, X, GripVertical } from "lucide-react";
@@ -96,7 +97,9 @@ export default function RoutineDialog({ open, onOpenChange, routineId, onSuccess
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [routineExercises, setRoutineExercises] = useState<RoutineExercise[]>([]);
-  const [selectedExerciseId, setSelectedExerciseId] = useState<string>("");
+  const [selectedExerciseId, setSelectedExerciseId] = useState("");
+  const [exerciseSearchOpen, setExerciseSearchOpen] = useState(false);
+  const [exerciseSearchValue, setExerciseSearchValue] = useState("");
   const [sets, setSets] = useState("3");
   const [reps, setReps] = useState("10");
 
@@ -251,18 +254,51 @@ export default function RoutineDialog({ open, onOpenChange, routineId, onSuccess
               <Label className="mb-3 block">Adicionar Exercícios</Label>
               
               <div className="grid grid-cols-[1fr_80px_80px_auto] gap-2 mb-4">
-                <Select value={selectedExerciseId} onValueChange={setSelectedExerciseId}>
-                  <SelectTrigger>
-                    <SelectValue placeholder="Selecione exercício" />
-                  </SelectTrigger>
-                  <SelectContent className="max-h-[300px]">
-                    {exercises?.map((ex) => (
-                      <SelectItem key={ex.id} value={ex.id.toString()}>
-                        {ex.name}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
+                <Popover open={exerciseSearchOpen} onOpenChange={setExerciseSearchOpen}>
+                  <PopoverTrigger asChild>
+                    <Button
+                      variant="outline"
+                      role="combobox"
+                      aria-expanded={exerciseSearchOpen}
+                      className="justify-between font-normal"
+                    >
+                      {selectedExerciseId
+                        ? exercises?.find((ex) => ex.id.toString() === selectedExerciseId)?.name
+                        : "Digite o exercício..."}
+                    </Button>
+                  </PopoverTrigger>
+                  <PopoverContent className="w-[300px] p-0" align="start">
+                    <Command>
+                      <CommandInput 
+                        placeholder="Buscar exercício..." 
+                        value={exerciseSearchValue}
+                        onValueChange={setExerciseSearchValue}
+                      />
+                      <CommandList>
+                        <CommandEmpty>Nenhum exercício encontrado.</CommandEmpty>
+                        <CommandGroup>
+                          {exercises
+                            ?.filter((ex) => 
+                              ex.name.toLowerCase().includes(exerciseSearchValue.toLowerCase())
+                            )
+                            .map((ex) => (
+                              <CommandItem
+                                key={ex.id}
+                                value={ex.id.toString()}
+                                onSelect={() => {
+                                  setSelectedExerciseId(ex.id.toString());
+                                  setExerciseSearchOpen(false);
+                                  setExerciseSearchValue("");
+                                }}
+                              >
+                                {ex.name}
+                              </CommandItem>
+                            ))}
+                        </CommandGroup>
+                      </CommandList>
+                    </Command>
+                  </PopoverContent>
+                </Popover>
                 
                 <Input
                   type="number"
